@@ -18,3 +18,5 @@ RUN apt-get update --fix-missing && \
     && docker-php-ext-install imap \
     && pecl install amqp \
     && docker-php-ext-enable amqp
+
+WORKDIR /var/www/html/app
