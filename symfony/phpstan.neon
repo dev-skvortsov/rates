@@ -1,11 +1,5 @@
 parameters:
     paths:
         - src
-        - tests
     level: 8
-    scanDirectories:
-        - tests/Support
-    excludePaths:
-        analyse:
-            - tests/Support/_generated
 
