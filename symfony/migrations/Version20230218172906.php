@@ -23,7 +23,7 @@ final class Version20230218172906 extends AbstractMigration
                 trading_date DATE NOT NULL COMMENT 'Trading date (can be equal \"to received date\" or not)',
                 value DECIMAL ( 10, 4 ) UNSIGNED NOT NULL COMMENT 'Rate value',
                 nominal INT ( 10 ) UNSIGNED NOT NULL COMMENT 'Rate nominal',
-                base_code VARCHAR( 3 ) NOT NULL DEFAULT 'RUR' COMMENT 'Currency code',
+                base_code VARCHAR( 3 ) NOT NULL DEFAULT 'RUR' COMMENT 'Base currency code',
                 PRIMARY KEY (date, code),
                 INDEX (trading_date)
             ) COMMENT 'Table to store rates'
