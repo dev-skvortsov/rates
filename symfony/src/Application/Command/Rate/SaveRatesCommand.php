@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Command;
+namespace App\Application\Command\Rate;
 
-use App\Application\Command\Dto\RatesDTO;
+use App\Application\Command\CommandInterface;
+use App\Application\Command\Rate\Dto\RatesDTO;
 
 /**
  * @implements CommandInterface<void>

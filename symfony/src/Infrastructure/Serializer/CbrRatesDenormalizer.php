@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Serializer;
 
-use App\Application\Command\Dto\RateDTO;
-use App\Application\Command\Dto\RatesDTO;
+use App\Application\Command\Rate\Dto\RateDTO;
+use App\Application\Command\Rate\Dto\RatesDTO;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class CbrRatesDenormalizer implements DenormalizerInterface

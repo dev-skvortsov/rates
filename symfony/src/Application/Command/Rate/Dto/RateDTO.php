@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Command\Dto;
+namespace App\Application\Command\Rate\Dto;
 
 use App\Domain\ValueObject\Code;
 
-class RateDTO
+final readonly class RateDTO
 {
     public function __construct(
         public string $code,

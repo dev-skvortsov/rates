@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Service;
 
-use App\Application\Command\Dto\RateDTO;
-use App\Application\Command\Dto\RatesDTO;
+use App\Application\Command\Rate\Dto\RateDTO;
+use App\Application\Command\Rate\Dto\RatesDTO;
 use App\Domain\ValueObject\Code;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;

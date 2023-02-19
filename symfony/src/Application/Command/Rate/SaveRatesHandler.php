@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Command;
+namespace App\Application\Command\Rate;
 
-use App\Application\Command\Dto\RateDTO;
+use App\Application\Command\CommandHandlerInterface;
+use App\Application\Command\Rate\Dto\RateDTO;
 use App\Domain\Entity\Rate;
 use App\Domain\Repository\RateRepositoryInterface;
 use App\Domain\ValueObject\Code;

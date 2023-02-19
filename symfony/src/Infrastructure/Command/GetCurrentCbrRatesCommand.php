@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Infrastructure\Command;
 
 use App\Application\Command\CommandBusInterface;
-use App\Application\Command\SaveRatesCommand;
 use App\Infrastructure\Service\CbrRatesService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,7 +24,7 @@ class GetCurrentCbrRatesCommand extends Command
         try {
             $ratesDTO = $this->cbrRatesService->getRates($today);
 
-            $this->commandBus->execute(new SaveRatesCommand(\DateTimeImmutable::createFromMutable($today), $ratesDTO));
+            $this->commandBus->execute(new \App\Application\Command\Rate\SaveRatesCommand(\DateTimeImmutable::createFromMutable($today), $ratesDTO));
         } catch (\Throwable $e) {
             return Command::FAILURE;
         }

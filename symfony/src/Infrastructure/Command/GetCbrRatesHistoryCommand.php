@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Infrastructure\Command;
 
 use App\Application\Command\CommandBusInterface;
-use App\Application\Command\SaveRatesCommand;
 use App\Domain\Entity\Rate;
 use App\Infrastructure\Service\CbrRatesService;
 use Symfony\Component\Console\Command\Command;
@@ -29,7 +28,7 @@ class GetCbrRatesHistoryCommand extends Command
             try {
                 $ratesDTO = $this->cbrRatesService->getRates($date);
 
-                $this->commandBus->execute(new SaveRatesCommand(\DateTimeImmutable::createFromMutable($date), $ratesDTO));
+                $this->commandBus->execute(new \App\Application\Command\Rate\SaveRatesCommand(\DateTimeImmutable::createFromMutable($date), $ratesDTO));
             } catch (\Throwable $e) {
                 continue;
             }
