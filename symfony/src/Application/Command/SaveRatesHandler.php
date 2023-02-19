@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Command;
 
 use App\Application\Command\Dto\RateDTO;
@@ -19,7 +21,7 @@ final readonly class SaveRatesHandler implements CommandHandlerInterface
     public function __invoke(SaveRatesCommand $command): void
     {
         $rates = array_map(
-            function(RateDTO $rate) use ($command) {
+            function (RateDTO $rate) use ($command) {
                 return $this->createRate(
                     $command->date,
                     $command->ratesDTO->tradingDate,

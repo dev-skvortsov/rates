@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Infrastructure\Request;
 
-use App\Domain\ValueObject\Code;
 use App\Domain\Entity\Rate;
+use App\Domain\ValueObject\Code;
 use App\Infrastructure\Request\Resolve\RequestInterface;
 use App\Infrastructure\Request\Validate\ValidatedRequestInterface;
-use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -51,14 +52,14 @@ class RateRequest implements RequestInterface, ValidatedRequestInterface
 
         $metadata->addConstraint(new Assert\Callback([
             self::class,
-            'codeMustBeNotEqualBaseCode'
+            'codeMustBeNotEqualBaseCode',
         ]));
 
         $metadata->addPropertyConstraints('date', [
             new Assert\NotBlank(),
             new Assert\DateTime(format: self::DATE_FORMAT),
             new Assert\GreaterThanOrEqual(Rate::getStartTradingDate()->format(self::DATE_FORMAT)),
-            new Assert\LessThanOrEqual((new DateTime())->format(self::DATE_FORMAT))
+            new Assert\LessThanOrEqual((new \DateTime())->format(self::DATE_FORMAT)),
         ]);
     }
 
@@ -67,9 +68,9 @@ class RateRequest implements RequestInterface, ValidatedRequestInterface
         return $this->code;
     }
 
-    public function getDate(): DateTime
+    public function getDate(): \DateTime
     {
-        return DateTime::createFromFormat(self::DATE_FORMAT, $this->date);
+        return \DateTime::createFromFormat(self::DATE_FORMAT, $this->date);
     }
 
     public function getBaseCode(): string
@@ -79,7 +80,7 @@ class RateRequest implements RequestInterface, ValidatedRequestInterface
 
     public static function codeMustBeNotEqualBaseCode(RateRequest $request, ExecutionContextInterface $context, mixed $payload): void
     {
-        if ($request->getCode() !== '' && $request->getCode() === $request->getBaseCode()) {
+        if ('' !== $request->getCode() && $request->getCode() === $request->getBaseCode()) {
             $context->buildViolation('Code must not be equal to baseCode')
                 ->atPath('code')
                 ->addViolation();

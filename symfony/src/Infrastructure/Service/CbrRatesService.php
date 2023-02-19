@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Infrastructure\Service;
 
 use App\Application\Command\Dto\RateDTO;
@@ -39,7 +41,7 @@ final readonly class CbrRatesService
         return $this->cbrClient->request(Request::METHOD_GET, '/scripts/XML_daily.asp', [
             'query' => [
                 'date_req' => $date->format(self::DATE_FORMAT),
-            ]
+            ],
         ])->getContent();
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\ValueObject;
 
 final readonly class Code
@@ -14,7 +16,7 @@ final readonly class Code
 
     public static function create(string $code): Code
     {
-        if (mb_strlen($code) != self::ISO4217_CODE_LENGTH) {
+        if (self::ISO4217_CODE_LENGTH != mb_strlen($code)) {
             throw new \DomainException('Code length must be equal 3 symbols');
         }
 

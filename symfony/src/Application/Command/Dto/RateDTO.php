@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Command\Dto;
 
 use App\Domain\ValueObject\Code;
-use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class RateDTO
 {

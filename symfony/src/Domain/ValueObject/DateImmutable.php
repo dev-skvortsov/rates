@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domain\ValueObject;
+declare(strict_types=1);
 
-use DateTime;
+namespace App\Domain\ValueObject;
 
 class DateImmutable extends \DateTimeImmutable
 {
@@ -25,7 +25,7 @@ class DateImmutable extends \DateTimeImmutable
         );
     }
 
-    public static function createFromMutable(DateTime $object): DateImmutable
+    public static function createFromMutable(\DateTime $object): DateImmutable
     {
         return parent::createFromMutable($object);
     }

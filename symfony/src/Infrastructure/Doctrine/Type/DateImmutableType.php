@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Infrastructure\Doctrine\Type;
 
 use App\Domain\ValueObject\DateImmutable;
@@ -17,18 +19,14 @@ class DateImmutableType extends \Doctrine\DBAL\Types\DateImmutableType
 
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        if ($value === null || $value instanceof DateImmutable) {
+        if (null === $value || $value instanceof DateImmutable) {
             return $value;
         }
 
-        $dateTime = DateImmutable::createFromFormat('!' . $platform->getDateFormatString(), $value);
+        $dateTime = DateImmutable::createFromFormat('!'.$platform->getDateFormatString(), $value);
 
-        if ($dateTime === false) {
-            throw ConversionException::conversionFailedFormat(
-                $value,
-                $this->getName(),
-                $platform->getDateFormatString(),
-            );
+        if (false === $dateTime) {
+            throw ConversionException::conversionFailedFormat($value, $this->getName(), $platform->getDateFormatString());
         }
 
         return $dateTime;

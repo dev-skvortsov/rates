@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Infrastructure\Doctrine\Type;
 
 use App\Domain\ValueObject\Value;
@@ -27,7 +29,7 @@ class ValueType extends Type
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         try {
-            return Value::create($value);
+            return Value::create(floatval($value));
         } catch (\DomainException $e) {
             throw ConversionException::conversionFailed($value, $this->getName(), $e);
         }

@@ -1,9 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Infrastructure\Bus;
 
-use App\Application\Command\CommandBusInterface;
-use App\Application\Command\CommandInterface;
 use App\Application\Query\QueryBusInterface;
 use App\Application\Query\QueryInterface;
 use Symfony\Component\Messenger\HandleTrait;

@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Infrastructure\Serializer;
 
 use App\Application\Command\Dto\RateDTO;
 use App\Application\Command\Dto\RatesDTO;
-use App\Domain\ValueObject\DateImmutable;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class CbrRatesDenormalizer implements DenormalizerInterface
@@ -45,6 +46,6 @@ class CbrRatesDenormalizer implements DenormalizerInterface
 
     public function supportsDenormalization(mixed $data, string $type, string $format = null)
     {
-        return $type === RatesDTO::class;
+        return RatesDTO::class === $type;
     }
 }

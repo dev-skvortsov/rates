@@ -1,22 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Entity;
 
 use App\Domain\ValueObject\Code;
+use App\Domain\ValueObject\DateImmutable;
 use App\Domain\ValueObject\Nominal;
 use App\Domain\ValueObject\Value;
-use App\Domain\ValueObject\DateImmutable;
-use DateTime;
 
 readonly class Rate
 {
     public function __construct(
-        public Code          $code,
+        public Code $code,
         public DateImmutable $date,
         public DateImmutable $tradingDate,
-        public Value         $value,
-        public Nominal       $nominal,
-        public Code          $baseCode
+        public Value $value,
+        public Nominal $nominal,
+        public Code $baseCode
     ) {
     }
 
@@ -56,11 +57,12 @@ readonly class Rate
     }
 
     /**
-     * The date from which we can receive the official rate
+     * The date from which we can receive the official rate.
+     *
      * @see https://www.cbr.ru/currency_base/OldVal/
      */
-    public static function getStartTradingDate(): DateTime
+    public static function getStartTradingDate(): \DateTime
     {
-        return new DateTime('1992-07-01');
+        return new \DateTime('1992-07-01');
     }
 }

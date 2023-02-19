@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Query\Rate;
 
 use App\Application\Query\QueryHandlerInterface;
@@ -7,7 +9,6 @@ use App\Domain\Entity\Rate;
 use App\Domain\Repository\RateRepositoryInterface;
 use App\Domain\ValueObject\Code;
 use App\Domain\ValueObject\DateImmutable;
-use Exception;
 
 final readonly class GetRateHandler implements QueryHandlerInterface
 {
@@ -44,13 +45,13 @@ final readonly class GetRateHandler implements QueryHandlerInterface
     {
         $rate = $this->repository->getByCodeAndDate($code, $date);
         if (null === $rate) {
-            throw new Exception('Rate not found');
+            throw new \Exception('Rate not found');
         }
 
-        if ($baseCode->code !== Code::RUR_CODE) {
+        if (Code::RUR_CODE !== $baseCode->code) {
             $baseRate = $this->repository->getByCodeAndDate($baseCode, $date);
             if (null === $baseRate) {
-                throw new Exception('Rate not found');
+                throw new \Exception('Rate not found');
             }
 
             return $rate->calculateCrossRate($baseRate);
