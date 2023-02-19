@@ -51,15 +51,3 @@ services:
       - '11211:11211'
     container_name: memcached
 
-  rabbitmq:
-    image: rabbitmq:3.11-management
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    volumes:
-      - ./docker/rabbitmq/data/:/var/lib/rabbitmq
-      - ./docker/rabbitmq/log/:/var/log/rabbitmq
-    networks:
-      - docker
-    container_name: rabbitmq
-
