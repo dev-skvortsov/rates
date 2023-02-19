@@ -1,0 +1,19 @@
+<doctrine-mapping xmlns="https://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Domain\Entity\Rate" table="rates">
+        <id name="date" type="pk_date_immutable" >
+            <generator strategy="NONE"/>
+        </id>
+        <id name="code" type="code" >
+            <generator strategy="NONE"/>
+        </id>
+        <field name="tradingDate" type="pk_date_immutable" column="trading_date"/>
+        <field name="value" type="value"/>
+        <field name="nominal" type="nominal"/>
+        <field name="baseCode" type="code" column="base_code"/>
+    </entity>
+
+</doctrine-mapping>
