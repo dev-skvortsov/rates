@@ -63,16 +63,4 @@ readonly class Rate
     {
         return new DateTime('1992-07-01');
     }
-
-    public static function createRurRate(DateImmutable $date, DateImmutable $tradingDate): Rate
-    {
-        return new Rate(
-            Code::create(Code::RUR_CODE),
-            $date,
-            $tradingDate,
-            Value::create(1.0),
-            Nominal::create(1),
-            Code::create(Code::RUR_CODE),
-        );
-    }
 }
