@@ -1,5 +1,4 @@
-controllers:
-    resource:
-        path: ../src/Controller/
-        namespace: App\Controller
-    type: attribute
+rate:
+    path: //v1/rates
+    controller: App\Infrastructure\Controller\RatesController
+    methods: [ GET ]
