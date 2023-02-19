@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Request;
 
-use App\Entity\Code;
-use App\Entity\Rate;
+use App\Domain\ValueObject\Code;
+use App\Domain\Entity\Rate;
 use App\Infrastructure\Request\Resolve\RequestInterface;
 use App\Infrastructure\Request\Validate\ValidatedRequestInterface;
 use DateTime;
@@ -77,7 +77,7 @@ class RateRequest implements RequestInterface, ValidatedRequestInterface
         return $this->baseCode;
     }
 
-    public static function codeMustBeNotEqualBaseCode(RateRequest $request, ExecutionContextInterface $context, $payload): void
+    public static function codeMustBeNotEqualBaseCode(RateRequest $request, ExecutionContextInterface $context, mixed $payload): void
     {
         if ($request->getCode() !== '' && $request->getCode() === $request->getBaseCode()) {
             $context->buildViolation('Code must not be equal to baseCode')
