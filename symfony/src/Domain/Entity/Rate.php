@@ -39,7 +39,7 @@ readonly class Rate
             $this->code,
             $this->date,
             $this->tradingDate,
-            Value::create($valuePerRur / $baseValuePerRur),
+            Value::create($baseValuePerRur / $valuePerRur),
             Nominal::create(1),
             $baseRate->code
         );
@@ -49,6 +49,10 @@ readonly class Rate
     {
         if (!$this->code->isEqual($rate->code) || !$this->baseCode->isEqual($rate->baseCode)) {
             throw new \DomainException('Rates must be equal');
+        }
+
+        if (!$this->nominal->isEqual($rate->nominal)) {
+            throw new \DomainException('Nominals must be equal');
         }
 
         $diff = $this->value->value - $rate->value->value;
