@@ -38,6 +38,7 @@ final readonly class GetRateHandler implements QueryHandlerInterface
         return new RateDTO(
             $rate->value->value,
             $prevRate ? $rate->calculateRateDiff($prevRate) : 0.0,
+            $rate->nominal->nominal
         );
     }
 
@@ -48,15 +49,11 @@ final readonly class GetRateHandler implements QueryHandlerInterface
             throw new \Exception('Rate not found');
         }
 
-        if (Code::RUR_CODE !== $baseCode->code) {
-            $baseRate = $this->repository->getByCodeAndDate($baseCode, $date);
-            if (null === $baseRate) {
-                throw new \Exception('Rate not found');
-            }
-
-            return $rate->calculateCrossRate($baseRate);
+        $baseRate = $this->repository->getByCodeAndDate($baseCode, $date);
+        if (null === $baseRate) {
+            throw new \Exception('Rate not found');
         }
 
-        return $rate;
+        return $rate->calculateCrossRate($baseRate);
     }
 }
