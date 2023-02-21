@@ -9,15 +9,15 @@ use App\Domain\ValueObject\DateImmutable;
 use App\Domain\ValueObject\Nominal;
 use App\Domain\ValueObject\Value;
 
-readonly class Rate
+class Rate
 {
     public function __construct(
-        public Code $code,
-        public DateImmutable $date,
-        public DateImmutable $tradingDate,
-        public Value $value,
-        public Nominal $nominal,
-        public Code $baseCode
+        public readonly  Code $code,
+        public readonly  DateImmutable $date,
+        public readonly  DateImmutable $tradingDate,
+        public readonly  Value $value,
+        public readonly  Nominal $nominal,
+        public readonly  Code $baseCode
     ) {
     }
 
