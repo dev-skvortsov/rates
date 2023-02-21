@@ -8,6 +8,7 @@ framework:
                 middleware:
                     - doctrine_transaction
                     - doctrine_ping_connection
+                    - App\Infrastructure\Bus\Middleware\ClearEntityManagerMiddleware
             query.bus:
 
         transports:
