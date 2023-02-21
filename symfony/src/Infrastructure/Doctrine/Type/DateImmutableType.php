@@ -17,7 +17,7 @@ class DateImmutableType extends \Doctrine\DBAL\Types\DateImmutableType
         return self::TYPE;
     }
 
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): DateImmutable
     {
         if (null === $value || $value instanceof DateImmutable) {
             return $value;

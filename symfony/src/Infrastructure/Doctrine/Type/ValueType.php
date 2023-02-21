@@ -26,7 +26,7 @@ class ValueType extends Type
         return self::TYPE_NAME;
     }
 
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): Value
     {
         try {
             return Value::create(floatval($value));

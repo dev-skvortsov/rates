@@ -26,7 +26,7 @@ class NominalType extends Type
         return self::TYPE_NAME;
     }
 
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): Nominal
     {
         try {
             return Nominal::create($value);
