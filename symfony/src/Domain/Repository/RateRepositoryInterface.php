@@ -15,7 +15,13 @@ interface RateRepositoryInterface
      */
     public function storeMultiple(array $rates): void;
 
-    public function getByCodeAndDate(Code $code, DateImmutable $date): ?Rate;
+    /**
+     * @throws \DomainException
+     */
+    public function get(Code $baseCode, Code $code, DateImmutable $date): Rate;
 
-    public function getPrevTradingDate(Rate $rate, DateImmutable $tradingDate): ?DateImmutable;
+    /**
+     * @throws \DomainException
+     */
+    public function getPrevTradingDate(DateImmutable $date): DateImmutable;
 }

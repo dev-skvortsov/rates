@@ -17,7 +17,7 @@ final readonly class Code
     public static function create(string $code): Code
     {
         if (self::ISO4217_CODE_LENGTH != mb_strlen($code)) {
-            throw new \DomainException('Code length must be equal 3 symbols');
+            throw new \DomainException(sprintf('Code length must be equal %d symbols', self::ISO4217_CODE_LENGTH));
         }
 
         return new self(mb_strtoupper($code));
@@ -31,5 +31,10 @@ final readonly class Code
     public function __toString(): string
     {
         return $this->code;
+    }
+
+    public static function createRUR(): Code
+    {
+        return self::create(self::RUR_CODE);
     }
 }

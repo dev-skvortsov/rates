@@ -26,14 +26,10 @@ final readonly class CbrRatesService
         /** @var RatesDTO $ratesDTO */
         $ratesDTO = $this->serializer->deserialize($xml, RatesDTO::class, 'xml');
 
-        $rurRate = new RateDTO(
-            Code::RUR_CODE,
-            1,
-            1.0,
-            Code::RUR_CODE
+        return new RatesDTO(
+            $ratesDTO->tradingDate,
+            array_merge($ratesDTO->rates, [$this->createRurRateDTO()])
         );
-
-        return new RatesDTO($ratesDTO->tradingDate, array_merge($ratesDTO->rates, [$rurRate]));
     }
 
     private function getRatesXml(\DateTime $date): string
@@ -43,5 +39,15 @@ final readonly class CbrRatesService
                 'date_req' => $date->format(self::DATE_FORMAT),
             ],
         ])->getContent();
+    }
+
+    private function createRurRateDTO(): RateDTO
+    {
+        return new RateDTO(
+            Code::RUR_CODE,
+            Code::RUR_CODE,
+            1,
+            1.0,
+        );
     }
 }

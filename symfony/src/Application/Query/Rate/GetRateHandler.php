@@ -16,44 +16,50 @@ final readonly class GetRateHandler implements QueryHandlerInterface
     {
     }
 
-    public function __invoke(GetRateQuery $query): ?RateDTO
+    public function __invoke(GetRateQuery $query): RateDTO
     {
-        $date = DateImmutable::createFromMutable($query->date);
-        $code = Code::create($query->code);
         $baseCode = Code::create($query->baseCode);
+        $code = Code::create($query->code);
+        $date = DateImmutable::createFromMutable($query->date);
 
-        $rate = $this->getRate($date, $code, $baseCode);
-
-        $prevTradingDate = $this->repository->getPrevTradingDate($rate, $date);
-        if (null !== $prevTradingDate) {
-            $prevRate = $this->getRate(
-                $prevTradingDate,
-                $code,
-                $baseCode
-            );
-        } else {
-            $prevRate = null;
-        }
+        $rate = $this->getRate($code, $baseCode, $date);
+        $prevRate = $this->getPrevRate($code, $baseCode, $rate->tradingDate);
 
         return new RateDTO(
             $rate->value->value,
-            $prevRate ? $rate->calculateRateDiff($prevRate) : 0.0,
+            !is_null($prevRate) ? $rate->calculateRateDiff($prevRate) : 0.0,
             $rate->nominal->nominal
         );
     }
 
-    private function getRate(DateImmutable $date, Code $code, Code $baseCode): Rate
+    private function getRate(Code $code, Code $baseCode, DateImmutable $date): Rate
     {
-        $rate = $this->repository->getByCodeAndDate($code, $date);
-        if (null === $rate) {
-            throw new \Exception('Rate not found');
+        try {
+            $rate = $this->repository->get($baseCode, $code, $date);
+        } catch (\DomainException $e) {
+            // todo add custom exception
+            $rate = $this->getCrossRate($code, $baseCode, $date);
         }
 
-        $baseRate = $this->repository->getByCodeAndDate($baseCode, $date);
-        if (null === $baseRate) {
-            throw new \Exception('Rate not found');
-        }
+        return $rate;
+    }
+
+    private function getCrossRate(Code $code, Code $baseCode, DateImmutable $date): Rate
+    {
+        $rate = $this->repository->get($code, Code::create(Code::RUR_CODE), $date);
+        $baseRate = $this->repository->get($baseCode, Code::create(Code::RUR_CODE), $date);
 
         return $rate->calculateCrossRate($baseRate);
+    }
+
+    private function getPrevRate(Code $code, Code $baseCode, DateImmutable $date): ?Rate
+    {
+        try {
+            $prevDate = $this->repository->getPrevTradingDate($date);
+            return $this->getRate($code, $baseCode, $prevDate);
+        } catch (\DomainException $e) {
+            return null;
+        }
+
     }
 }

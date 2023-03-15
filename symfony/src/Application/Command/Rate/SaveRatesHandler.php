@@ -39,11 +39,11 @@ final readonly class SaveRatesHandler implements CommandHandlerInterface
     {
         return new Rate(
             Code::create($rateDTO->code),
+            Code::create($rateDTO->baseCode),
             DateImmutable::createFromDateTimeImmutable($date),
             DateImmutable::createFromDateTimeImmutable($tradingDate),
             Value::create($rateDTO->value),
             Nominal::create($rateDTO->nominal),
-            Code::create($rateDTO->baseCode),
         );
     }
 }

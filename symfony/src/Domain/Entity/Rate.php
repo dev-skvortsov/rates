@@ -12,12 +12,12 @@ use App\Domain\ValueObject\Value;
 class Rate
 {
     public function __construct(
-        public readonly  Code $code,
-        public readonly  DateImmutable $date,
-        public readonly  DateImmutable $tradingDate,
-        public readonly  Value $value,
-        public readonly  Nominal $nominal,
-        public readonly  Code $baseCode
+        public readonly Code $code,
+        public readonly Code $baseCode,
+        public readonly DateImmutable $date,
+        public readonly DateImmutable $tradingDate,
+        public readonly Value $value,
+        public readonly Nominal $nominal,
     ) {
     }
 
@@ -27,21 +27,25 @@ class Rate
             throw new \DomainException('Dates must be equal');
         }
 
-        if (!$this->baseCode->isEqual($baseRate->baseCode)) {
-            throw new \DomainException('Base valutes must be equal');
+        if (
+            !$this->code->isEqual(Code::createRUR())
+            || !$baseRate->code->isEqual(Code::createRUR())
+        ) {
+            throw new \DomainException('Cross rates can be calculated only by using RUR as quoted currency');
         }
 
-        $valuePerRur = $this->value->value / floatval($this->nominal->nominal);
-        $baseValuePerRur = $baseRate->value->value / floatval($baseRate->nominal->nominal);
+        $valuePerRUR = $this->value->value / floatval($this->nominal->nominal);
+        $baseValuePerRUR = $baseRate->value->value / floatval($baseRate->nominal->nominal);
 
-        // todo increase nominal if cross rate is to low
+        $crossRate = $baseValuePerRUR / $valuePerRUR;
+
         return new Rate(
-            $this->code,
+            $this->baseCode,
+            $baseRate->baseCode,
             $this->date,
             $this->tradingDate,
-            Value::create($baseValuePerRur / $valuePerRur),
+            Value::create($crossRate),
             Nominal::create(1),
-            $baseRate->code
         );
     }
 

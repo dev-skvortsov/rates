@@ -11,6 +11,7 @@ use App\Domain\ValueObject\DateImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
+use function _PHPStan_d3e3292d7\RingCentral\Psr7\_parse_request_uri;
 
 /**
  * @extends ServiceEntityRepository<Rate>
@@ -31,28 +32,39 @@ class RateRepository extends ServiceEntityRepository implements RateRepositoryIn
         $this->getEntityManager()->flush();
     }
 
-    public function getByCodeAndDate(Code $code, DateImmutable $date): ?Rate
+    public function getPrevTradingDate(DateImmutable $date): DateImmutable
     {
-        return $this->find(['code' => $code, 'date' => $date]);
-    }
+        $query = $this->getEntityManager()->getConnection()->prepare('
+            SELECT trading_date
+            FROM rates r
+            WHERE r.trading_date < :date
+                AND r.date < :date
+            ORDER BY r.trading_date DESC    
+            LIMIT 1
+        ');
 
-    public function getPrevTradingDate(Rate $rate, DateImmutable $date): ?DateImmutable
-    {
-        $qb = $this->createQueryBuilder('r');
+        $prevTradingDate = $query->executeQuery(['date' => $date->format(DateImmutable::FORMAT)])
+            ->fetchOne();
 
-        $prevTradingDate = $qb->select('r.tradingDate')
-            ->where('r.code = :code')
-            ->andWhere('r.date < :date')
-            ->andWhere('r.tradingDate < :tradingDate')
-            ->setMaxResults(1)
-            ->setParameter('code', $rate->code)
-            ->setParameter('date', $rate->date)
-            ->setParameter('tradingDate', $rate->tradingDate)
-            ->orderBy('r.tradingDate', Criteria::DESC)
-            ->addOrderBy('r.date', Criteria::DESC)
-            ->getQuery()
-            ->getSingleScalarResult();
+        if (!$prevTradingDate) {
+            throw new \DomainException('No previous trading date');
+        }
 
         return new DateImmutable($prevTradingDate);
+    }
+
+    public function get(Code $baseCode, Code $code, DateImmutable $date): Rate
+    {
+        $rate = $this->find([
+            'baseCode' => $baseCode,
+            'code' => $code,
+            'date' => $date,
+        ]);
+
+        if (null === $rate) {
+            throw new \DomainException('Rate not found');
+        }
+
+        return $rate;
     }
 }

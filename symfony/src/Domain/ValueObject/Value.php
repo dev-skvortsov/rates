@@ -6,7 +6,7 @@ namespace App\Domain\ValueObject;
 
 final readonly class Value
 {
-    public const PRECISION = 4;
+    public const PRECISION = 6;
 
     private function __construct(public float $value)
     {

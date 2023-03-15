@@ -25,6 +25,7 @@ class DateImmutable extends \DateTimeImmutable
         );
     }
 
+    #[\ReturnTypeWillChange]
     public static function createFromMutable(\DateTime $object): DateImmutable
     {
         return parent::createFromMutable($object);

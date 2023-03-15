@@ -23,4 +23,14 @@ final readonly class Nominal
     {
         return $this->nominal === $nominal->nominal;
     }
+
+    public static function calculateByValue(float $value): Nominal
+    {
+        $nominal = round(1.0 / $value);
+        if ($nominal <= 1) {
+            return Nominal::create(1);
+        }
+
+        return Nominal::create(intval($nominal));
+    }
 }
